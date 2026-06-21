@@ -13,10 +13,10 @@
 
 ## 📌 Project Overview
 
-This end-to-end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
+This end to end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
 
-- Predict hospital admission at triage — before a doctor sees the patient
-- Identify peak congestion periods and patient flow patterns
+- Predict hospital admission at triage before a doctor sees the patient.
+- Identify peak congestion periods and patient flow patterns.
 - Detect demographic disparities in admission rates
 - Deliver actionable recommendations to reduce ED overcrowding
 
@@ -45,11 +45,11 @@ This end-to-end data science project analyses **560,486 emergency department vis
 
 ## 🏥 Business Problem
 
-Emergency departments worldwide face a growing crisis — patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
+Emergency departments worldwide face a growing crisis, patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
 
 **This project addresses four core questions:**
 
-1. When are peak congestion periods — and how should staffing respond?
+1. When are peak congestion periods and how should staffing respond?
 2. Which patient profiles drive the highest admission burden?
 3. Can we predict admission accurately enough to support triage decisions?
 4. Are there demographic disparities in how patients are admitted?
@@ -84,7 +84,7 @@ Emergency departments worldwide face a growing crisis — patients arrive in lar
 ## 🔬 Approach
 
 ### 1. Data Cleaning
-- Dropped rows with missing ESI values (~2,457 rows) — unknown ESI is medically meaningless
+- Dropped rows with missing ESI values (~2,457 rows) unknown ESI is medically meaningless
 - Dropped rows with missing age values (~11 rows)
 - Applied median imputation to missing vital signs
 - Treated missing chief complaint flags as 0 (complaint not present)
@@ -130,7 +130,7 @@ Four binary classifiers were trained and compared:
 
 ### ESI & Admission Patterns
 - **ESI 1 patients are admitted 85.6% of the time** — nearly 9 in 10 critical patients require inpatient care
-- **ESI 4 and 5 patients are almost always discharged** — representing a major opportunity to redirect low-acuity patients to walk-in clinics
+- **ESI 4 and 5 patients are almost always discharged** — representing a major opportunity to redirect low acuity patients to walk in clinics
 - Admission rate drops sharply and consistently from ESI 1 → ESI 5, confirming triage scoring accuracy
 
 ### Vital Signs
@@ -139,20 +139,20 @@ Four binary classifiers were trained and compared:
 - **58.9% of patients** arrived with all vitals within normal range; **41.1%** had at least one abnormal vital
 
 ### Demographics
-- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups — suggesting uninsured patients only visit the ED when critically ill
+- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups, this suggest uninsured patients only visit the ED when critically ill
 - **65+ patients are admitted 55.3% of the time** vs only 10.2% for patients aged 18–24
-- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers — a 4.2 point gap across 45,545 patients
+- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers ,a 4.2 point gap across 45,545 patients
 - **White or Caucasian patients (35.9%)** and **American Indian or Alaska Native patients (30.1%)** have the highest racial admission rates
 
 ### Chief Complaints
 - **Shortness of breath** is the strongest predictor of admission (correlation 0.161)
-- **Altered mental status** is second (0.128) — confusion at triage is a serious red flag
+- **Altered mental status** is second (0.128), confusion at triage is a serious red flag
 - **Alcohol intoxication** tops the ESI severity chart (0.165) despite rarely resulting in admission
-- **Motor vehicle crashes and sore throat** are negatively correlated with admission — most treated and discharged
+- **Motor vehicle crashes and sore throat** are negatively correlated with admission, most treated and discharged
 
 ### Prior History
 - Patients with **3+ prior admissions have a 63% admission rate** vs 21% for first-time patients
-- **31% of all patients** have at least one prior admission — flagging these at check-in could significantly accelerate triage
+- **31% of all patients** have at least one prior admission, flagging these at check in could significantly accelerate triage
 
 ---
 
@@ -167,7 +167,7 @@ Four binary classifiers were trained and compared:
 
 ### Recommended Model — Random Forest
 Despite the Neural Network achieving the highest AUC (0.8317), **Random Forest is the recommended model for clinical deployment** because:
-- Highest F1 score **(0.8482)** — best real-world performance
+- Highest F1 score **(0.8482)** — best real world performance
 - Fewest missed admissions **(201 false negatives)** — safest for patients
 - Strong precision **(0.8250)** — fewer false alarms
 - No threshold tuning required
@@ -182,7 +182,7 @@ Despite the Neural Network achieving the highest AUC (0.8317), **Random Forest i
 | 4 | Language (English) | 0.0248 | 2.5% |
 | 5 | Vital Abnormality Count | 0.0236 | 2.4% |
 
-> **ESI score and prior admission history together drive 80% of the model's decisions** — confirming that what the triage nurse records in the first 3 minutes is the most powerful admission signal available.
+> **ESI score and prior admission history together drive 80% of the model's decisions**This confirms that what the triage nurse records in the first 3 minutes is the most powerful admission signal available.
 
 ---
 
@@ -196,7 +196,7 @@ Despite the Neural Network achieving the highest AUC (0.8317), **Random Forest i
 | **Gender** | Male: 30.7% vs Female: 28.9% | Small but consistent gap |
 | **Age** | 65+: 55.3% vs 18-24: 10.2% | Age is a strong independent predictor |
 
-The most concerning finding is the **self-pay admission rate of 95.1%** — this is not a clinical pattern but a financial access problem. Patients without insurance delay care until they have no choice but to be admitted.
+The most concerning finding is the **self-pay admission rate of 95.1%**,  this is not a clinical pattern but a financial access problem. Patients without insurance delay care until they have no choice but to be admitted.
 
 ---
 
@@ -221,8 +221,8 @@ The most concerning finding is the **self-pay admission rate of 95.1%** — this
 | **No explicit wait time column** | Cannot directly model time-to-treatment | Used arrival patterns and ESI as proxies for congestion |
 | **Missing ESI values (~2,457 rows dropped)** | Excluded patients may differ systematically | Reported % dropped; consistent with original paper approach |
 | **Historical data (2014–2017)** | Pre-COVID patterns may not reflect current ED behaviour | Note temporal limitation; recommend retraining on post-2020 data |
-| **De-identified data** | Cannot link patients to outcomes beyond admission | Model predicts admission only — not clinical outcome or survival |
-| **Class imbalance (29.7% admitted)** | Risk of over-predicting discharge | Applied class_weight='balanced' for Logistic Regression |
+| **De-identified data** | Cannot link patients to outcomes beyond admission | Model predicts admission only and not clinical outcome or survival |
+| **Class imbalance (29.7% admitted)** | Risk of over predicting discharge | Applied class_weight='balanced' for Logistic Regression |
 
 ---
 
@@ -247,7 +247,6 @@ hospital-triage-waittime-analysis/
 │   ├── neural_network.pkl           ← DNN model
 │   └── scaler.pkl                   ← Feature scaler
 ├── dashboard/
-│   ├── dashboard.py                 ← Streamlit prediction app
 │   └── operations_dashboard.pbix    ← Power BI operations dashboard
 ├── reports/
 │   └── final_report.pdf             ← PDF summary of insights
@@ -298,10 +297,6 @@ jupyter notebook
 # 4. notebooks/04_Equity_Analysis.ipynb
 ```
 
-### Run the Streamlit Dashboard
-```bash
-streamlit run dashboard/dashboard.py
-```
 
 ### Dataset
 Download the dataset from Kaggle:
@@ -321,7 +316,7 @@ Place the downloaded file at: `data/raw/5v_cleandf.rdata`
 | **Machine Learning** | Scikit-learn, XGBoost |
 | **Statistical Testing** | SciPy (Mann-Whitney U) |
 | **Model Persistence** | Joblib |
-| **Dashboard** | Power BI, Streamlit |
+| **Dashboard** | Power BI|
 | **Environment** | Jupyter Notebook, Anaconda |
 | **Version Control** | Git, GitHub |
 
@@ -332,7 +327,8 @@ Place the downloaded file at: `data/raw/5v_cleandf.rdata`
 **Mujidat Fadeyi**  
 Data Analyst | MSc Chemistry | Python • Power BI • Excel
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/your-linkedin)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)]
+(www.linkedin.com/in/fadeyi-mujidat)
 [![GitHub](https://img.shields.io/badge/GitHub-MjDAnalyst-black?logo=github)](https://github.com/MjDAnalyst/MjDAnalyst)
 
 ---
