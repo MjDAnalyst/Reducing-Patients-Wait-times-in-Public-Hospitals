@@ -13,10 +13,10 @@
 
 ## 📌 Project Overview
 
-This end to end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
+This end-to-end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
 
-- Predict hospital admission at triage before a doctor sees the patient.
-- Identify peak congestion periods and patient flow patterns.
+- Predict hospital admission at triage — before a doctor sees the patient
+- Identify peak congestion periods and patient flow patterns
 - Detect demographic disparities in admission rates
 - Deliver actionable recommendations to reduce ED overcrowding
 
@@ -45,11 +45,11 @@ This end to end data science project analyses **560,486 emergency department vis
 
 ## 🏥 Business Problem
 
-Emergency departments worldwide face a growing crisis, patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
+Emergency departments worldwide face a growing crisis — patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
 
 **This project addresses four core questions:**
 
-1. When are peak congestion periods and how should staffing respond?
+1. When are peak congestion periods — and how should staffing respond?
 2. Which patient profiles drive the highest admission burden?
 3. Can we predict admission accurately enough to support triage decisions?
 4. Are there demographic disparities in how patients are admitted?
@@ -65,8 +65,10 @@ Emergency departments worldwide face a growing crisis, patients arrive in large 
 | **Source** | Yale-New Haven Health System via Kaggle |
 | **Period** | March 2014 – July 2017 |
 | **Total Visits** | 560,486 patient encounters |
+| **Analysed After Cleaning** | 255,308 records |
 | **Total Features** | 972 variables per visit |
-| **Target Variable** | `disposition` — ADMIT or DISCHARGE |
+| **Model Features Used** | 12 engineered and clinical features |
+| **Target Variable** | `disposition` — Admit or Discharge |
 | **Triage System** | Emergency Severity Index (ESI) 1–5 |
 
 ### ESI Triage Levels
@@ -84,7 +86,7 @@ Emergency departments worldwide face a growing crisis, patients arrive in large 
 ## 🔬 Approach
 
 ### 1. Data Cleaning
-- Dropped rows with missing ESI values (~2,457 rows) unknown ESI is medically meaningless
+- Dropped rows with missing ESI values (~2,457 rows) — unknown ESI is medically meaningless
 - Dropped rows with missing age values (~11 rows)
 - Applied median imputation to missing vital signs
 - Treated missing chief complaint flags as 0 (complaint not present)
@@ -107,17 +109,17 @@ Seven new features were created to improve model performance:
 ### 3. Exploratory Data Analysis
 - Heatmap analysis of patient volume by hour × day of week
 - ESI level distribution and admission rates
-- Vital signs comparison between admitted and discharged patients
-- Demographic disparity analysis across gender, ethnicity, language, and insurance
+- Vital signs comparison between admitted and discharged patients (Mann-Whitney U test)
+- Demographic disparity analysis across gender, ethnicity, language and insurance
 - Chief complaint frequency and admission association analysis
 - Prior visit history vs admission rate analysis
 
 ### 4. Machine Learning Models
-Four binary classifiers were trained and compared:
-- Logistic Regression (baseline)
+Four binary classifiers trained and compared on 12 features across 255,308 records:
+- Logistic Regression (baseline — with class_weight='balanced')
 - Random Forest
-- XGBoost
-- Deep Neural Network (MLP)
+- XGBoost (no class weight — handles imbalance naturally)
+- Deep Neural Network / MLP
 
 ---
 
@@ -127,62 +129,91 @@ Four binary classifiers were trained and compared:
 - **Monday 11:00–14:00** is the single busiest period with **22,737 visits**
 - The **11–14 hour bin** is consistently the most congested across every day of the week
 - Early morning **(03–06)** is the quietest period — approximately 4–5x fewer visits than peak
+- **Season has minimal impact** — all four seasons fall within 1 percentage point of each other on admission rates
 
 ### ESI & Admission Patterns
 - **ESI 1 patients are admitted 85.6% of the time** — nearly 9 in 10 critical patients require inpatient care
-- **ESI 4 and 5 patients are almost always discharged** — representing a major opportunity to redirect low acuity patients to walk in clinics
-- Admission rate drops sharply and consistently from ESI 1 → ESI 5, confirming triage scoring accuracy
+- **ESI 4 and 5 patients are almost always discharged** — representing a major opportunity to redirect low-acuity patients to walk-in clinics
+- Admission rate drops sharply and consistently from ESI 1 to ESI 5, confirming triage scoring accuracy
 
 ### Vital Signs
 - All 6 vital signs showed **statistically significant differences** between admitted and discharged patients (Mann-Whitney U, p < 0.05)
-- Admitted patients consistently showed **lower oxygen saturation, higher respiratory rate, higher heart rate**, and more unstable blood pressure
+- Admitted patients consistently showed **lower oxygen saturation, higher respiratory rate, higher heart rate** and more unstable blood pressure
 - **58.9% of patients** arrived with all vitals within normal range; **41.1%** had at least one abnormal vital
 
 ### Demographics
-- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups, this suggest uninsured patients only visit the ED when critically ill
+- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups — suggesting uninsured patients only visit the ED when critically ill
 - **65+ patients are admitted 55.3% of the time** vs only 10.2% for patients aged 18–24
-- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers ,a 4.2 point gap across 45,545 patients
+- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers — a 4.2 point gap across 45,545 patients
 - **White or Caucasian patients (35.9%)** and **American Indian or Alaska Native patients (30.1%)** have the highest racial admission rates
 
 ### Chief Complaints
 - **Shortness of breath** is the strongest predictor of admission (correlation 0.161)
-- **Altered mental status** is second (0.128), confusion at triage is a serious red flag
+- **Altered mental status** is second (0.128) — confusion at triage is a serious red flag
 - **Alcohol intoxication** tops the ESI severity chart (0.165) despite rarely resulting in admission
-- **Motor vehicle crashes and sore throat** are negatively correlated with admission, most treated and discharged
+- **Motor vehicle crashes and sore throat** are negatively correlated with admission — most treated and discharged
 
 ### Prior History
 - Patients with **3+ prior admissions have a 63% admission rate** vs 21% for first-time patients
-- **31% of all patients** have at least one prior admission, flagging these at check in could significantly accelerate triage
+- **31% of all patients** have at least one prior admission — flagging these at check-in could significantly accelerate triage
 
 ---
 
 ## 🤖 Model Results
 
-| Model | AUC | Precision | Recall | F1 | Threshold |
-|---|---|---|---|---|---|
-| **Random Forest** | 0.8179 | 0.8250 | **0.8726** | **0.8482** | 0.50 |
-| Neural Network | 0.8317 | 0.5155 | 0.7484 | 0.6105 | 0.30 |
-| Logistic Regression | 0.8261 | 0.4843 | 0.8131 | 0.6070 | 0.50 |
-| XGBoost | 0.8265 | 0.4841 | 0.7725 | 0.5952 | 0.35 |
+### AUC Scores — All Models
 
-### Recommended Model — Random Forest
-Despite the Neural Network achieving the highest AUC (0.8317), **Random Forest is the recommended model for clinical deployment** because:
-- Highest F1 score **(0.8482)** — best real world performance
-- Fewest missed admissions **(201 false negatives)** — safest for patients
-- Strong precision **(0.8250)** — fewer false alarms
-- No threshold tuning required
+| Model | AUC | Status |
+|---|---|---|
+| **Neural Network** | **0.8416** | 🥇 Best AUC |
+| **XGBoost** | **0.8404** | 🥈 Very close |
+| **Logistic Regression** | **0.8402** | 🥉 Strong baseline |
+| **Random Forest** | **0.8197** | 4th |
 
-### Top Predictors (XGBoost Feature Importance)
+### Full Evaluation — Default Threshold (0.50)
+
+| Model | Precision | Recall | F1 | Missed Admissions |
+|---|---|---|---|---|
+| **Logistic Regression** | 0.5549 | **0.8031** | **0.6563** | **933** |
+| Neural Network | 0.6552 | 0.5885 | 0.6201 | 1,950 |
+| XGBoost | **0.6632** | 0.5664 | 0.6110 | 2,055 |
+| Random Forest | 0.6236 | 0.5628 | 0.5916 | 2,072 |
+
+### After Threshold Tuning
+
+| Model | Precision | Recall | F1 | Threshold |
+|---|---|---|---|---|
+| **Neural Network** | 0.5683 | 0.7854 | **0.6595** | **0.35** |
+| **XGBoost** | 0.5544 | **0.8128** | 0.6592 | **0.30** |
+| **Logistic Regression** | 0.5549 | 0.8031 | 0.6563 | 0.50 |
+| **Random Forest** | 0.6236 | 0.5628 | 0.5916 | 0.50 |
+
+### Deployment Recommendation
+
+| Priority | Best Model | Threshold | Reason |
+|---|---|---|---|
+| **Never miss admission** | ✅ XGBoost | 0.30 | Highest recall 81.3% |
+| **Best overall balance** | ✅ Neural Network | 0.35 | Highest F1 0.6595 |
+| **Simplest to deploy** | ✅ Logistic Regression | 0.50 | No tuning needed, best recall at default |
+
+### Top Predictors — XGBoost Feature Importance
 
 | Rank | Feature | Importance | Contribution |
 |---|---|---|---|
-| 1 | ESI Score | 0.4862 | 48.6% |
-| 2 | Prior Admission History | 0.3105 | 31.1% |
-| 3 | Age | 0.0382 | 3.8% |
-| 4 | Language (English) | 0.0248 | 2.5% |
-| 5 | Vital Abnormality Count | 0.0236 | 2.4% |
+| 1 | **ESI Score** | 0.7159 | 71.6% |
+| 2 | **Prior Admission History** | 0.1181 | 11.8% |
+| 3 | **Age** | 0.0619 | 6.2% |
+| 4 | **n_admissions** | 0.0179 | 1.8% |
+| 5 | **Systolic BP** | 0.0156 | 1.6% |
+| 6 | **English Speaker** | 0.0143 | 1.4% |
+| 7 | **Diastolic BP** | 0.0133 | 1.3% |
+| 8 | **Heart Rate** | 0.0115 | 1.2% |
+| 9 | **Respiratory Rate** | 0.0109 | 1.1% |
+| 10 | **Oxygen Saturation** | 0.0105 | 1.1% |
+| 11 | **Vital Abnormality Count** | 0.0102 | 1.0% |
+| 12 | **is_high_acuity** | 0.0000 | 0.0% |
 
-> **ESI score and prior admission history together drive 80% of the model's decisions**This confirms that what the triage nurse records in the first 3 minutes is the most powerful admission signal available.
+> **ESI alone accounts for 71.6% of the model's decisions** — confirming that the triage nurse's initial severity score is the single most powerful admission predictor available at triage time.
 
 ---
 
@@ -194,9 +225,9 @@ Despite the Neural Network achieving the highest AUC (0.8317), **Random Forest i
 | **Language** | English: 30.1% vs Other: 25.9% | Non-English speakers may face communication barriers |
 | **Race** | Range: 21% to 36% across racial groups | Warrants further investigation into care pathways |
 | **Gender** | Male: 30.7% vs Female: 28.9% | Small but consistent gap |
-| **Age** | 65+: 55.3% vs 18-24: 10.2% | Age is a strong independent predictor |
+| **Age** | 65+: 55.3% vs 18–24: 10.2% | Age is a strong independent predictor |
 
-The most concerning finding is the **self-pay admission rate of 95.1%**,  this is not a clinical pattern but a financial access problem. Patients without insurance delay care until they have no choice but to be admitted.
+The most concerning finding is the **self-pay admission rate of 95.1%** — this is not a clinical pattern but a financial access problem. Patients without insurance delay care until they have no choice but to be admitted.
 
 ---
 
@@ -204,7 +235,7 @@ The most concerning finding is the **self-pay admission rate of 95.1%**,  this i
 
 | # | Recommendation | Supporting Data | Stakeholder |
 |---|---|---|---|
-| 1 | **Deploy Random Forest model as triage decision support** | F1: 0.8482, Recall: 87.3% — catches most admissions early | Medical Staff |
+| 1 | **Deploy XGBoost at threshold 0.30 as triage decision support** | Recall 81.3% — catches most admitted patients at triage | Medical Staff |
 | 2 | **Increase staffing on Monday 11:00–14:00** | 22,737 visits — highest single period in entire dataset | Administrators |
 | 3 | **Redirect ESI 4 & 5 patients to walk-in clinics** | 2.2% and 0.4% admission rates — ED resources wasted | Operations Team |
 | 4 | **Investigate and address barriers for self-pay patients** | 95.1% admission rate — financial access is a public health emergency | Health Ministry |
@@ -221,8 +252,9 @@ The most concerning finding is the **self-pay admission rate of 95.1%**,  this i
 | **No explicit wait time column** | Cannot directly model time-to-treatment | Used arrival patterns and ESI as proxies for congestion |
 | **Missing ESI values (~2,457 rows dropped)** | Excluded patients may differ systematically | Reported % dropped; consistent with original paper approach |
 | **Historical data (2014–2017)** | Pre-COVID patterns may not reflect current ED behaviour | Note temporal limitation; recommend retraining on post-2020 data |
-| **De-identified data** | Cannot link patients to outcomes beyond admission | Model predicts admission only and not clinical outcome or survival |
-| **Class imbalance (29.7% admitted)** | Risk of over predicting discharge | Applied class_weight='balanced' for Logistic Regression |
+| **De-identified data** | Cannot link patients to outcomes beyond admission | Model predicts admission only — not clinical outcome or survival |
+| **Class imbalance (30.9% admitted)** | Risk of over-predicting discharge | Applied class_weight='balanced' for Logistic Regression; natural handling for tree models |
+| **Temperature column unavailable** | triage_vital_temp and temp_last were empty in processed dataset | Removed from feature set; temperature captured indirectly via vital_abnormality_count |
 
 ---
 
@@ -230,27 +262,28 @@ The most concerning finding is the **self-pay admission rate of 95.1%**,  this i
 
 ```
 hospital-triage-waittime-analysis/
-├── README.md                        ← You are here
+├── README.md                        <- You are here
 ├── data/
-│   ├── raw/                         ← Kaggle dataset link (file too large to upload)
+│   ├── raw/                         <- Kaggle dataset link (file too large to upload)
 │   └── processed/
-│       └── hospital_cleaned.csv     ← Cleaned dataset with engineered features
+│       └── hospital_cleaned.csv     <- Cleaned dataset with engineered features
 ├── notebooks/
-│   ├── 01_EDA.ipynb                 ← Exploratory Data Analysis + visualisations
-│   ├── 02_Feature_Engineering.ipynb ← Feature engineering steps
-│   ├── 03_Modelling.ipynb           ← Model building, evaluation, comparison
-│   └── 04_Equity_Analysis.ipynb     ← Demographic fairness analysis
+│   ├── 01_EDA.ipynb                 <- Exploratory Data Analysis + visualisations
+│   ├── 02_Feature_Engineering.ipynb <- Feature engineering steps
+│   ├── 03_Modelling.ipynb           <- Model building, evaluation, comparison
+│   └── 04_Equity_Analysis.ipynb     <- Demographic fairness analysis
 ├── models/
-│   ├── random_forest.pkl            ← Best performing model
-│   ├── xgboost.pkl                  ← XGBoost model
-│   ├── logistic_regression.pkl      ← Baseline model
-│   ├── neural_network.pkl           ← DNN model
-│   └── scaler.pkl                   ← Feature scaler
+│   ├── logistic_regression.pkl      <- Best recall at default threshold
+│   ├── xgboost.pkl                  <- Best recall after tuning (threshold 0.30)
+│   ├── neural_network.pkl           <- Best F1 after tuning (threshold 0.35)
+│   ├── random_forest.pkl            <- Baseline ensemble model
+│   └── scaler.pkl                   <- Feature scaler
 ├── dashboard/
-│   └── operations_dashboard.pbix    ← Power BI operations dashboard
+│   ├── dashboard.py                 <- Streamlit prediction app
+│   └── operations_dashboard.pbix    <- Power BI operations dashboard
 ├── reports/
-│   └── final_report.pdf             ← PDF summary of insights
-└── requirements.txt                 ← Python dependencies
+│   └── final_report.pdf             <- PDF summary of insights
+└── requirements.txt                 <- Python dependencies
 ```
 
 ---
@@ -297,6 +330,10 @@ jupyter notebook
 # 4. notebooks/04_Equity_Analysis.ipynb
 ```
 
+### Run the Streamlit Dashboard
+```bash
+streamlit run dashboard/dashboard.py
+```
 
 ### Dataset
 Download the dataset from Kaggle:
@@ -316,7 +353,7 @@ Place the downloaded file at: `data/raw/5v_cleandf.rdata`
 | **Machine Learning** | Scikit-learn, XGBoost |
 | **Statistical Testing** | SciPy (Mann-Whitney U) |
 | **Model Persistence** | Joblib |
-| **Dashboard** | Power BI|
+| **Dashboard** | Power BI, Streamlit |
 | **Environment** | Jupyter Notebook, Anaconda |
 | **Version Control** | Git, GitHub |
 
@@ -327,8 +364,7 @@ Place the downloaded file at: `data/raw/5v_cleandf.rdata`
 **Mujidat Fadeyi**  
 Data Analyst | MSc Chemistry | Python • Power BI • Excel
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)]
-(www.linkedin.com/in/fadeyi-mujidat)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin)](https://linkedin.com/in/your-linkedin)
 [![GitHub](https://img.shields.io/badge/GitHub-MjDAnalyst-black?logo=github)](https://github.com/MjDAnalyst/MjDAnalyst)
 
 ---
