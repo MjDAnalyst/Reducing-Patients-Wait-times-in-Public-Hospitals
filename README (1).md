@@ -13,9 +13,9 @@
 
 ## 📌 Project Overview
 
-This end-to-end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
+This end to end data science project analyses **560,486 emergency department visits** from Yale-New Haven Health System (2014–2017) to:
 
-- Predict hospital admission at triage — before a doctor sees the patient
+- Predict hospital admission at triage before a doctor sees the patient
 - Identify peak congestion periods and patient flow patterns
 - Detect demographic disparities in admission rates
 - Deliver actionable recommendations to reduce ED overcrowding
@@ -45,11 +45,11 @@ This end-to-end data science project analyses **560,486 emergency department vis
 
 ## 🏥 Business Problem
 
-Emergency departments worldwide face a growing crisis — patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
+Emergency departments worldwide face a growing crisis, patients arrive in large volumes, triage nurses must assess severity in real time, and resource allocation decisions must be made instantly. When these systems fail, patients wait too long, health outcomes deteriorate, and clinical staff burn out.
 
 **This project addresses four core questions:**
 
-1. When are peak congestion periods — and how should staffing respond?
+1. When are peak congestion periods and how should staffing respond?
 2. Which patient profiles drive the highest admission burden?
 3. Can we predict admission accurately enough to support triage decisions?
 4. Are there demographic disparities in how patients are admitted?
@@ -142,20 +142,20 @@ Four binary classifiers trained and compared on 12 features across 255,308 recor
 - **58.9% of patients** arrived with all vitals within normal range; **41.1%** had at least one abnormal vital
 
 ### Demographics
-- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups — suggesting uninsured patients only visit the ED when critically ill
+- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups, suggesting uninsured patients only visit the ED when critically ill
 - **65+ patients are admitted 55.3% of the time** vs only 10.2% for patients aged 18–24
-- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers — a 4.2 point gap across 45,545 patients
+- **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers, a 4.2 point gap across 45,545 patients
 - **White or Caucasian patients (35.9%)** and **American Indian or Alaska Native patients (30.1%)** have the highest racial admission rates
 
 ### Chief Complaints
 - **Shortness of breath** is the strongest predictor of admission (correlation 0.161)
-- **Altered mental status** is second (0.128) — confusion at triage is a serious red flag
+- **Altered mental status** is second (0.128) confusion at triage is a serious red flag
 - **Alcohol intoxication** tops the ESI severity chart (0.165) despite rarely resulting in admission
-- **Motor vehicle crashes and sore throat** are negatively correlated with admission — most treated and discharged
+- **Motor vehicle crashes and sore throat** are negatively correlated with admission, most treated and discharged
 
 ### Prior History
 - Patients with **3+ prior admissions have a 63% admission rate** vs 21% for first-time patients
-- **31% of all patients** have at least one prior admission — flagging these at check-in could significantly accelerate triage
+- **31% of all patients** have at least one prior admission. flagging these at check in could significantly accelerate triage
 
 ---
 
@@ -213,7 +213,7 @@ Four binary classifiers trained and compared on 12 features across 255,308 recor
 | 11 | **Vital Abnormality Count** | 0.0102 | 1.0% |
 | 12 | **is_high_acuity** | 0.0000 | 0.0% |
 
-> **ESI alone accounts for 71.6% of the model's decisions** — confirming that the triage nurse's initial severity score is the single most powerful admission predictor available at triage time.
+> **ESI alone accounts for 71.6% of the model's decisions** This confirms that the triage nurse's initial severity score is the single most powerful admission predictor available at triage time.
 
 ---
 
@@ -262,7 +262,7 @@ The most concerning finding is the **self-pay admission rate of 95.1%** — this
 
 ```
 hospital-triage-waittime-analysis/
-├── README.md                        <- You are here
+├── README.md                        <- 
 ├── data/
 │   ├── raw/                         <- Kaggle dataset link (file too large to upload)
 │   └── processed/
@@ -279,7 +279,6 @@ hospital-triage-waittime-analysis/
 │   ├── random_forest.pkl            <- Baseline ensemble model
 │   └── scaler.pkl                   <- Feature scaler
 ├── dashboard/
-│   ├── dashboard.py                 <- Streamlit prediction app
 │   └── operations_dashboard.pbix    <- Power BI operations dashboard
 ├── reports/
 │   └── final_report.pdf             <- PDF summary of insights
@@ -330,10 +329,7 @@ jupyter notebook
 # 4. notebooks/04_Equity_Analysis.ipynb
 ```
 
-### Run the Streamlit Dashboard
-```bash
-streamlit run dashboard/dashboard.py
-```
+
 
 ### Dataset
 Download the dataset from Kaggle:
