@@ -128,12 +128,12 @@ Four binary classifiers trained and compared on 12 features across 255,308 recor
 ### Peak Congestion
 - **Monday 11:00–14:00** is the single busiest period with **22,737 visits**
 - The **11–14 hour bin** is consistently the most congested across every day of the week
-- Early morning **(03–06)** is the quietest period — approximately 4–5x fewer visits than peak
+- Early morning **(03–06)** is the quietest period, approximately 4–5x fewer visits than peak
 - **Season has minimal impact** — all four seasons fall within 1 percentage point of each other on admission rates
 
 ### ESI & Admission Patterns
-- **ESI 1 patients are admitted 85.6% of the time** — nearly 9 in 10 critical patients require inpatient care
-- **ESI 4 and 5 patients are almost always discharged** — representing a major opportunity to redirect low-acuity patients to walk-in clinics
+- **ESI 1 patients are admitted 85.6% of the time** This means nearly 9 in 10 critical patients require inpatient care
+- **ESI 4 and 5 patients are almost always discharged** This represents a major opportunity to redirect low-acuity patients to walk in clinics
 - Admission rate drops sharply and consistently from ESI 1 to ESI 5, confirming triage scoring accuracy
 
 ### Vital Signs
@@ -142,7 +142,7 @@ Four binary classifiers trained and compared on 12 features across 255,308 recor
 - **58.9% of patients** arrived with all vitals within normal range; **41.1%** had at least one abnormal vital
 
 ### Demographics
-- **Self-pay patients have a 95.1% admission rate** — far above all other insurance groups, suggesting uninsured patients only visit the ED when critically ill
+- **Self-pay patients have a 95.1% admission rate**  far above all other insurance groups, suggesting uninsured patients only visit the ED when critically ill
 - **65+ patients are admitted 55.3% of the time** vs only 10.2% for patients aged 18–24
 - **Non-English speakers are admitted at 25.9%** vs 30.1% for English speakers, a 4.2 point gap across 45,545 patients
 - **White or Caucasian patients (35.9%)** and **American Indian or Alaska Native patients (30.1%)** have the highest racial admission rates
@@ -236,9 +236,9 @@ The most concerning finding is the **self-pay admission rate of 95.1%** — this
 | # | Recommendation | Supporting Data | Stakeholder |
 |---|---|---|---|
 | 1 | **Deploy XGBoost at threshold 0.30 as triage decision support** | Recall 81.3% — catches most admitted patients at triage | Medical Staff |
-| 2 | **Increase staffing on Monday 11:00–14:00** | 22,737 visits — highest single period in entire dataset | Administrators |
-| 3 | **Redirect ESI 4 & 5 patients to walk-in clinics** | 2.2% and 0.4% admission rates — ED resources wasted | Operations Team |
-| 4 | **Investigate and address barriers for self-pay patients** | 95.1% admission rate — financial access is a public health emergency | Health Ministry |
+| 2 | **Increase staffing on Monday 11:00–14:00** | 22,737 visits highest single period in entire dataset | Administrators |
+| 3 | **Redirect ESI 4 & 5 patients to walk-in clinics** | 2.2% and 0.4% admission rates, ED resources wasted | Operations Team |
+| 4 | **Investigate and address barriers for self-pay patients** | 95.1% admission rate, financial access is a public health emergency | Health Ministry |
 | 5 | **Flag patients with prior admissions at check-in** | 63% admission rate for patients with 3+ prior admissions | Triage Nurses |
 | 6 | **Implement language support services at triage** | 4.2 point admission gap between English and non-English speakers | Equity Officers |
 
